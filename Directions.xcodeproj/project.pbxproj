@@ -10,6 +10,9 @@
 		E86026D11DF0C12D0024B48E /* Directions.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E86026C71DF0C12D0024B48E /* Directions.framework */; };
 		E86026D61DF0C12D0024B48E /* DirectionsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86026D51DF0C12D0024B48E /* DirectionsTests.swift */; };
 		E86026D81DF0C12D0024B48E /* Directions.h in Headers */ = {isa = PBXBuildFile; fileRef = E86026CA1DF0C12D0024B48E /* Directions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E86026E21DF0C1D50024B48E /* Orientation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86026E11DF0C1D50024B48E /* Orientation.swift */; };
+		E86026E41DF0C1E70024B48E /* Turn.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86026E31DF0C1E70024B48E /* Turn.swift */; };
+		E86026E61DF0C2690024B48E /* Directions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E86026E51DF0C2690024B48E /* Directions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -29,6 +32,9 @@
 		E86026D01DF0C12D0024B48E /* DirectionsTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DirectionsTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E86026D51DF0C12D0024B48E /* DirectionsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DirectionsTests.swift; sourceTree = "<group>"; };
 		E86026D71DF0C12D0024B48E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E86026E11DF0C1D50024B48E /* Orientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Orientation.swift; sourceTree = "<group>"; };
+		E86026E31DF0C1E70024B48E /* Turn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Turn.swift; sourceTree = "<group>"; };
+		E86026E51DF0C2690024B48E /* Directions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Directions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +78,9 @@
 			isa = PBXGroup;
 			children = (
 				E86026CA1DF0C12D0024B48E /* Directions.h */,
+				E86026E11DF0C1D50024B48E /* Orientation.swift */,
+				E86026E51DF0C2690024B48E /* Directions.swift */,
+				E86026E31DF0C1E70024B48E /* Turn.swift */,
 				E86026CB1DF0C12D0024B48E /* Info.plist */,
 			);
 			path = Directions;
@@ -148,6 +157,7 @@
 				TargetAttributes = {
 					E86026C61DF0C12D0024B48E = {
 						CreatedOnToolsVersion = 8.1;
+						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
 					};
 					E86026CF1DF0C12D0024B48E = {
@@ -196,6 +206,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E86026E41DF0C1E70024B48E /* Turn.swift in Sources */,
+				E86026E61DF0C2690024B48E /* Directions.swift in Sources */,
+				E86026E21DF0C1D50024B48E /* Orientation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -320,6 +333,7 @@
 		E86026DC1DF0C12D0024B48E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -331,6 +345,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = dayj.Directions;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -338,6 +353,7 @@
 		E86026DD1DF0C12D0024B48E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -356,6 +372,7 @@
 		E86026DF1DF0C12D0024B48E /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = DirectionsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dayj.DirectionsTests;
@@ -367,6 +384,7 @@
 		E86026E01DF0C12D0024B48E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				INFOPLIST_FILE = DirectionsTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = dayj.DirectionsTests;
