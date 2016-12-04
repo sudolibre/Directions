@@ -11,5 +11,6 @@ import Foundation
 enum Turn {
     case left
     case right
+
     //case none
 }

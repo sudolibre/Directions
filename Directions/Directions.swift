@@ -7,95 +7,136 @@
 //
 
 import Foundation
-var travelX = 0
-var travelY = 0
 
-//enum Turn {
-//    case left
-//    case right
-//    //case none
-//}
-//
-//enum Orientation {
-//    case north, south, east, west
-//}
+typealias Location = (x: Int, y: Int)
 
-func convertToCardinalDirection(orientation: Orientation, turn: Turn) -> Orientation {
-    switch (orientation, turn) {
-    case (.north, .left):
-        return Orientation.west
-    case (.north, .right):
-        return Orientation.east
-    case (.south, .left):
-        return Orientation.east
-    case (.south, .right):
-        return Orientation.west
-    case (.east, .left):
-        return Orientation.north
-    case (.east, .right):
-        return Orientation.south
-    case (.west, .left):
-        return Orientation.south
-    case (.west, .right):
-        return Orientation.north
-    default:
-        fatalError()
-    }
-}
 
-func computeDistance(orientation: Orientation, blocks: Int) {
+func moveDistance(from location: inout Location, orientation: Orientation, blocks: Int) -> Location {
     switch orientation {
     case .north:
-        travelY += blocks
+        location.y += blocks
     case .south:
-        travelY -= blocks
+        location.y -= blocks
     case .east:
-        travelX += blocks
+        location.x += blocks
     case .west:
-        travelX -= blocks
+        location.x -= blocks
     }
+    
+    return location
     
 }
 
+func simplifyMixedBasedDirections(directions: [(instruction: Any, blocks: Int)]) -> (location: Location, cardinalDirections: [(orientation: Orientation, blocks: Int)]) {
+    var orientation = Orientation.north
+    var location: Location = (0, 0)
+    var cardinalDirections = [(orientation: Orientation, blocks: Int)]()
 
-let directions: [(Turn, Int)] = [(.left, 4), (.left, 4), (.left, 5), (.right, 5), (.right, 4), (.left, 4), (.right, 5), (.right, 4), (.right, 2), (.left, 3), (.right, 1), (.right, 1), (.left, 4), (.left, 5), (.right, 3), (.left, 1), (.left, 1), (.right, 4), (.left, 2), (.right, 1), (.right, 4), (.right, 4), (.left, 2), (.left, 2), (.right, 4), (.left, 4), (.right, 1), (.right, 3), (.left, 3), (.left, 1), (.left, 2), (.right, 1), (.right, 5), (.left, 5), (.left, 1), (.left, 1), (.right, 3), (.right, 5), (.left, 1), (.right, 4), (.left, 5), (.right, 5), (.right, 1), (.left, 185), (.right, 4), (.left, 1), (.right, 51), (.left, 2), (.right, 78), (.right, 1), (.left, 4), (.right, 188), (.right, 1), (.left, 5), (.right, 5), (.right, 2), (.right, 3), (.left, 5), (.right, 3), (.right, 4), (.left, 1), (.right, 2), (.right, 2), (.right, 3), (.right, 2), (.left, 5), (.right, 2), (.left, 1), (.left, 4), (.right, 4), (.left, 4), (.right, 2), (.left, 3), (.left, 4), (.right, 2), (.left, 3), (.right, 3), (.right, 2), (.left, 2), (.left, 3), (.right, 4), (.right, 3), (.right, 1), (.left, 4), (.left, 2), (.left, 5), (.right, 4), (.right, 4), (.left, 1), (.right, 1), (.left, 5), (.left, 1), (.right, 3), (.right, 1), (.left, 2), (.right, 1), (.right, 1), (.right, 3), (.left, 4), (.left, 1), (.left, 3), (.right, 2), (.right, 4), (.right, 2), (.left, 2), (.right, 1), (.left, 5), (.right, 3), (.left, 3), (.right, 3), (.left, 1), (.right, 4), (.left, 3), (.left, 3), (.right, 4), (.left, 2), (.left, 1), (.left, 3), (.right, 2), (.right, 3), (.left, 2), (.left, 1), (.right, 4), (.left, 3), (.left, 5), (.left, 2), (.left, 4), (.right, 1), (.left, 4), (.left, 4), (.right, 3), (.right, 5), (.left, 4), (.left, 1), (.left, 1), (.right, 4), (.left, 2), (.right, 5), (.right, 1), (.right, 1), (.right, 2), (.right, 1), (.right, 5), (.left, 1), (.left, 3), (.left, 5), (.right, 2), (.left, 4), (.left, 4), (.left, 5), (.right, 5), (.right, 4), (.left, 4), (.right, 5), (.right, 4), (.right, 2), (.left, 3), (.right, 1), (.right, 1), (.left, 4), (.left, 5), (.right, 3), (.left, 1), (.left, 1), (.right, 4), (.left, 2), (.right, 1), (.right, 4), (.right, 4), (.left, 2), (.left, 2), (.right, 4), (.left, 4), (.right, 1), (.right, 3), (.left, 3), (.left, 1), (.left, 2), (.right, 1), (.right, 5), (.left, 5), (.left, 1), (.left, 1), (.right, 3), (.right, 5), (.left, 1), (.right, 4), (.left, 5), (.right, 5), (.right, 1), (.left, 185), (.right, 4), (.left, 1), (.right, 51)]
-
-func simplifyDirections(directions: [(turn: Turn, blocks: Int)]) -> [Int] {
-    var previousOrientation = Orientation.north
     for i in directions {
-        switch i {
-        case let x where x.turn == .left:
-            let travelDirection = convertToCardinalDirection(orientation: previousOrientation, turn: .left)
-            let blocks = x.blocks
-            previousOrientation = travelDirection
-            computeDistance(orientation: travelDirection, blocks: blocks)
-        case let x where x.turn == .right:
-            let travelDirection = convertToCardinalDirection(orientation: previousOrientation, turn: .right)
-            let blocks = x.blocks
-            previousOrientation = travelDirection
-            computeDistance(orientation: travelDirection, blocks: blocks)
-        default:
-            print("defualt case")
+        if i.instruction is Turn {
+            orientation = orientation.turn(i.instruction as! Turn)
+            cardinalDirections.append((orientation, i.blocks))
+            location = moveDistance(from: &location, orientation: orientation, blocks: i.blocks)
+        } else if i.instruction is Orientation {
+            orientation = i.instruction as! Orientation
+            cardinalDirections.append((orientation, i.blocks))
+            location = moveDistance(from: &location, orientation: i.instruction as! Orientation, blocks: i.blocks)
+        } else {
+            fatalError()
         }
     }
-    return [travelX, travelY]
-    
+    return (location, cardinalDirections)
 }
 
 
-func giveDirections() {
-    let simpleDirections = simplifyDirections(directions: directions)
+
+
+
+func simplifyTurnBasedDirections(directions: [(turn: Turn, blocks: Int)]) -> (location: Location, cardinalDirections: [(orientation: Orientation, blocks: Int)])  {
+    var orientation = Orientation.north
+    var location: Location = (0, 0)
+    var cardinalDirections = [(orientation: Orientation, blocks: Int)]()
+    for i in directions {
+        orientation = orientation.turn(i.turn)
+        cardinalDirections.append((orientation, i.blocks))
+        location = moveDistance(from: &location, orientation: orientation, blocks: i.blocks)
+    }
+    return (location, cardinalDirections)
+    
+}
+
+func simplifyCardinalBasedDirections(directions: [(orientation: Orientation, blocks: Int)]) -> Location {
+    var location: Location = (0, 0)
+    var turnDirections = [(turn: Turn, blocks: Int)]()
+   // var previousOrientation = Orientation.north
+    for i in directions {
+        //turnDirections.append((previousOrientation.orientToNewDirection(i.orientation), i.blocks))
+        //previousOrientation = i.orientation
+        location = moveDistance(from: &location, orientation: i.orientation, blocks: i.blocks)
+    }
+    return location
+}
+
+
+
+func looksFamiliar(directions: [(turn: Turn, blocks: Int)]) -> Location? {
+    var tempArray = [Location]()
+    var orientation = Orientation.north
+    var location: Location = (0, 0)
+    for i in directions {
+        orientation = orientation.turn(i.turn)
+        location = moveDistance(from: &location, orientation: orientation, blocks: i.blocks)
+        let containedLocation = tempArray.contains { element in
+            if element.x == location.x && element.y == location.y {
+                return true
+            } else {
+                return false
+            }
+        }
+        if containedLocation {
+            return location
+        }
+        tempArray.append(location)
+    }
+    return nil
+}
+
+
+func giveDirections(directions: [(turn: Turn, blocks: Int)]) -> String {
+    let simpleDirections = simplifyTurnBasedDirections(directions: directions).location
     var firstDirection = ""
     var secondDirection = ""
-    if simpleDirections[0] > 0 {
+    if simpleDirections.x > 0 {
         firstDirection = "East"
     } else {
         firstDirection = "West"
     }
-    if simpleDirections[1] > 0 {
+    if simpleDirections.y > 0 {
         secondDirection = "North"
     } else {
         secondDirection = "South"
     }
-    print("Go \(firstDirection) for \(abs(simpleDirections[0])) blocks and then \(secondDirection) for \(abs(simpleDirections[1])) blocks")
+    let response = ("Go \(firstDirection) for \(abs(simpleDirections.x)) blocks and then \(secondDirection) for \(abs(simpleDirections.y)) blocks")
+    print(response)
+    return response
 }
+
+func giveDirections(directions: [(orientation: Orientation, blocks: Int)]) -> String {
+    let simpleDirections = simplifyCardinalBasedDirections(directions: directions)
+    var firstDirection = ""
+    var secondDirection = ""
+    if simpleDirections.x > 0 {
+        firstDirection = "East"
+    } else {
+        firstDirection = "West"
+    }
+    if simpleDirections.y > 0 {
+        secondDirection = "North"
+    } else {
+        secondDirection = "South"
+    }
+    let response = ("Go \(firstDirection) for \(abs(simpleDirections.x)) blocks and then \(secondDirection) for \(abs(simpleDirections.y)) blocks")
+    print(response)
+    return response
+}
+

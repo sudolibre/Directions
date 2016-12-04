@@ -35,6 +35,7 @@
 		E86026E11DF0C1D50024B48E /* Orientation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Orientation.swift; sourceTree = "<group>"; };
 		E86026E31DF0C1E70024B48E /* Turn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Turn.swift; sourceTree = "<group>"; };
 		E86026E51DF0C2690024B48E /* Directions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Directions.swift; sourceTree = "<group>"; };
+		E860270D1DF4884D0024B48E /* testPlayground.playground */ = {isa = PBXFileReference; lastKnownFileType = file.playground; path = testPlayground.playground; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +82,7 @@
 				E86026E11DF0C1D50024B48E /* Orientation.swift */,
 				E86026E51DF0C2690024B48E /* Directions.swift */,
 				E86026E31DF0C1E70024B48E /* Turn.swift */,
+				E860270D1DF4884D0024B48E /* testPlayground.playground */,
 				E86026CB1DF0C12D0024B48E /* Info.plist */,
 			);
 			path = Directions;
